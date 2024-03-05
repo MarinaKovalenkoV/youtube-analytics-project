@@ -1,18 +1,19 @@
 import json
 import os
+from pprint import pprint
+
 from googleapiclient.discovery import build
 
 api_key: str = os.getenv('YT_API_KEY')
-
+youtube = build('youtube', 'v3', developerKey=api_key)
 
 class Video:
 
     def __init__(self, video_id) -> None:
         self.__video_id = video_id  # id видео
-        self.video_response = build('youtube', 'v3', developerKey=api_key).videos().list(
-            part='snippet,statistics,contentDetails,topicDetails',
-            id=video_id
-            ).execute()
+        self.video_response = youtube.videos().list(part='snippet,statistics', id=video_id).execute()
+        self.item = self.video_response['items'][0]['snippet']
+        self.count = self.video_response['items'][0]['statistics']
 
     @property
     def _video_id(self):
@@ -25,8 +26,7 @@ class Video:
 
     @property
     def video_title(self):  # название видео
-        self._video_title: str = self.video_response['items'][0]['snippet']['title']
-        return self._video_title
+        return self.item['title']
 
 
     def print_info(self):
@@ -34,18 +34,15 @@ class Video:
 
     @property
     def video_url(self):  # ссылка на видео
-        self.video_url: str = self.video_response['items'][0]['snippet']['title']
-        return self.video_url
+        return self.item['thumbnails']['default']['url']
 
     @property
     def view_count(self):  # количество просмотров
-        self.view_count: int = self.video_response['items'][0]['statistics']['viewCount']
-        return self.view_count
+        return int(self.count['viewCount'])
 
     @property
     def like_count(self):  # количество лайков
-        self.like_count: int = self.video_response['items'][0]['statistics']['likeCount']
-        return self.like_count
+        return int(self.count['likeCount'])
 
     def __str__(self):
         return f"{self.video_title}"

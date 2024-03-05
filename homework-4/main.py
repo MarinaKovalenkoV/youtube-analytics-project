@@ -7,3 +7,4 @@ if __name__ == '__main__':
     assert str(video1) == 'GIL в Python: зачем он нужен и как с этим жить'
     assert str(video2) == 'MoscowPython Meetup 78 - вступление'
 
+
