@@ -15,7 +15,6 @@ class Channel:
         self._channel_id = channel_id  # id каннала
         self.channel = build('youtube', 'v3', developerKey=api_key).channels().list(id=self.channel_id, part='snippet,statistics').execute()
 
-
     @property
     def channel_id(self):
         return self._channel_id
