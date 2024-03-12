@@ -34,7 +34,7 @@ class Video:
 
     @property
     def video_url(self):  # ссылка на видео
-        return self.item['thumbnails']['default']['url']
+        return f'https://www.youtube.com/watch?v={self.__video_id}'
 
     @property
     def view_count(self):  # количество просмотров
